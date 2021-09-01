@@ -20,7 +20,7 @@ function App() {
       // deal with edit
     } else {
       //show alert
-
+      showAlert(true, 'success', 'item added to the list');
       //add item to the list array
       const newItem = { 
         id: new Date().getTime().toString(),
@@ -34,8 +34,14 @@ function App() {
   //funkcja służąca do wyświtlania alertu żeby wykorzystać ją w wielu miejscach, podano specjalnie wartości domyśle które powodują, że wywołanie jej bez argumentów zeruje stan
   const showAlert = (show=false, type='', msg='') => {
     setAlert({show, type, msg});
-  };
+  };  
   
+  //funkcja czyszcząca listę
+  const clearList = () => {
+    showAlert(true, 'danger', 'empty list');
+    setList([]);
+  }
+
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
@@ -55,7 +61,7 @@ function App() {
       {list.length > 0 && (
         <div className="grocery-container">
           <List items={list} />
-          <button className="clear-btn">clear items</button>
+          <button className="clear-btn" onClick={clearList}>clear items</button>
         </div>
       )}
     </section>
