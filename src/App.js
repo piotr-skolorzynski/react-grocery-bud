@@ -14,6 +14,8 @@ function App() {
     e.preventDefault();
     if (!name) {
       //display Alert 
+      showAlert(true, 'danger', 'please enter value');
+      //zerowanie alertu zostanie zrobione poprzez wykorzystanie useEffect wewnątrz komponentu Alert, dlatego jako props przekazywane jest ciało funkcji showAlert a uruchomiona bez argumentów ukrywa alert
     } else if (name && isEdditing) {
       // deal with edit
     } else {
@@ -27,12 +29,17 @@ function App() {
       setList([...list, newItem]);//dodanie do listy
       setName('');//zerowanie inputa
     }
-  }
+  };
+
+  //funkcja służąca do wyświtlania alertu żeby wykorzystać ją w wielu miejscach, podano specjalnie wartości domyśle które powodują, że wywołanie jej bez argumentów zeruje stan
+  const showAlert = (show=false, type='', msg='') => {
+    setAlert({show, type, msg});
+  };
   
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
-        {alert.show && <Alert />}
+        {alert.show && <Alert {...alert} removeAlert={showAlert} />}
         <h3>grocery bud</h3>
         <div className="form-control">
           <input 
