@@ -12,7 +12,21 @@ function App() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    
+    if (!name) {
+      //display Alert 
+    } else if (name && isEdditing) {
+      // deal with edit
+    } else {
+      //show alert
+
+      //add item to the list array
+      const newItem = { 
+        id: new Date().getTime().toString(),
+        title: name
+      }
+      setList([...list, newItem]);//dodanie do listy
+      setName('');//zerowanie inputa
+    }
   }
   
   return (
@@ -31,11 +45,12 @@ function App() {
           <button type="submit" className="submit-btn">{ isEdditing ? 'edit' : 'submit' }</button>
         </div>
       </form>
-      <div className="grocery-container">
-        <List />
-        <button className="clear-btn">clear items</button>
-      </div>
-
+      {list.length > 0 && (
+        <div className="grocery-container">
+          <List items={list} />
+          <button className="clear-btn">clear items</button>
+        </div>
+      )}
     </section>
   );
 }
