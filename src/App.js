@@ -42,10 +42,17 @@ function App() {
     setList([]);
   }
 
+  //funkcja usuwająca wybrany element
+  const removeItem = id => {
+    showAlert(true, 'danger', 'item removed');
+    setList(list.filter(item => item.id !== id));
+  }
+
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
-        {alert.show && <Alert {...alert} removeAlert={showAlert} />}
+      {/* listę przekazujemy do alertu pownieważ chcemy żeby opóźnienie na usunięcie działało za każdym razem jak zmienia się stan listy a nie komponentu alert, dlatego jest tam w useEffect w drugim parametrze podana zależność do wartości list Dzięki temu mamy tzw. better user experience */}
+        {alert.show && <Alert {...alert} removeAlert={showAlert} list={list} />}
         <h3>grocery bud</h3>
         <div className="form-control">
           <input 
@@ -60,7 +67,7 @@ function App() {
       </form>
       {list.length > 0 && (
         <div className="grocery-container">
-          <List items={list} />
+          <List items={list} removeItem={removeItem} />
           <button className="clear-btn" onClick={clearList}>clear items</button>
         </div>
       )}
