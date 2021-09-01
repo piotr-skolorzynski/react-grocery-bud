@@ -17,7 +17,18 @@ function App() {
       showAlert(true, 'danger', 'please enter value');
       //zerowanie alertu zostanie zrobione poprzez wykorzystanie useEffect wewnątrz komponentu Alert, dlatego jako props przekazywane jest ciało funkcji showAlert a uruchomiona bez argumentów ukrywa alert
     } else if (name && isEdditing) {
-      // deal with edit
+      // deal with edit 
+      //założenie jest takie że zawsze zwracamy item, robimy conditionala w którym iterujemy po tablicy list i sprawdzamy czy któryś item.id jest równy editId po wciśnięciu przycisku edit i wtedy modyfikujemy title
+      setList(list.map(item => {
+        if (item.id === editId) {
+          return {...item, title: name};
+        }
+        return item;
+      }));
+      setName('');
+      setEditId(null);
+      setIsEdditing(false);
+      showAlert(true, 'success', 'value changed')
     } else {
       //show alert
       showAlert(true, 'success', 'item added to the list');
@@ -40,13 +51,21 @@ function App() {
   const clearList = () => {
     showAlert(true, 'danger', 'empty list');
     setList([]);
-  }
+  };
 
   //funkcja usuwająca wybrany element
   const removeItem = id => {
     showAlert(true, 'danger', 'item removed');
     setList(list.filter(item => item.id !== id));
-  }
+  };
+
+  //funkcja edytująca element
+  const editItem = id => {
+    const specificItem = list.find(item => item.id === id);
+    setIsEdditing(true);
+    setEditId(id);
+    setName(specificItem.title);
+  };
 
   return (
     <section className="section-center">
@@ -67,7 +86,7 @@ function App() {
       </form>
       {list.length > 0 && (
         <div className="grocery-container">
-          <List items={list} removeItem={removeItem} />
+          <List items={list} removeItem={removeItem} editItem={editItem} />
           <button className="clear-btn" onClick={clearList}>clear items</button>
         </div>
       )}
